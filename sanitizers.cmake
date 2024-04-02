@@ -1,25 +1,25 @@
 # Various sanitizers (runtime checks) for debugging
-option(SSP "Stack Smashing Protector (GCC/Clang/ApplClang on Unix)" OFF
-)# Available on Windows too
+# Use options (e.g. -DASAN=ON) for your *entire* project
+# AddressSanitizer also checks for stack abuse and leaks, but StackProtector and LeakSanitizer have less overhead.
+# Mutually compatible sanitizers: SSP, UBSAN, LSAN, ASAN
+# TSAN is incompatible with UBSAN, LSAN, ASAN
+option(SSP "Stack Smashing Protector (GCC/Clang/ApplClang/MSVC)" OFF)
 option(UBSAN "Undefined Behavior Sanitizer (GCC/Clang/AppleClang on Unix)" OFF)
-option(ASAN "Address Sanitizer (GCC/Clang/AppleClang on Unix, MSVC on Windows)"
-       OFF)
+option(LSAN "Leak Sanitizer (GCC/Clang/AppleClang on Unix)" OFF)
+option(ASAN "Address Sanitizer (GCC/Clang/AppleClang on Unix, MSVC on Windows)" OFF)
 option(TSAN "Thread Sanitizer (GCC/Clang/AppleClang on Unix)" OFF)
 option(RTC_C "Runtime Checks for Conversions (MSVC on Windows)" OFF)
 option(RTC_S "Runtime Checks for Stack (MSVC on Windows)" OFF)
 option(RTC_U "Runtime Checks for Uninitialized (MSVC on Windows)" OFF)
 
 if(SSP)
-  add_compile_options(-fstack-protector)
+  add_compile_options(-Wstack-protector -fstack-protector)
   add_link_options(-fstack-protector)
-  message(STATUS "Enable Stack Smashing Protector")
+  message(STATUS "Enabled Stack Smashing Protector")
 endif(SSP)
 
-if(ASAN
-   OR UBSAN
-   OR TSAN)
+if(UBSAN OR LSAN OR ASAN OR TSAN)
   if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-
   else()
     add_compile_options(-fno-omit-frame-pointer)
     add_link_options(-fno-omit-frame-pointer)
@@ -29,16 +29,26 @@ endif()
 if(UBSAN)
   if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     add_compile_options(/fsanitize=undefined)
-    message(
-      STATUS
-        "Please see if MSVC supports undefined behavior sanitizer: https://learn.microsoft.com/en-us/cpp/sanitizers/asan"
-    )
+    message(STATUS "See MSVC sanitizers: https://learn.microsoft.com/en-us/cpp/sanitizers")
+    message(STATUS "Consider RTC_C, RTC_S, RTS_U instead")
   else()
     add_compile_options(-fsanitize=undefined)
     add_link_options(-fsanitize=undefined)
   endif()
   message(STATUS "Enabled Undefined Behavior Sanitizer")
 endif(UBSAN)
+
+if(LSAN)
+  if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    add_compile_options(/fsanitize=leak)
+    message(STATUS "See MSVC sanitizers: https://learn.microsoft.com/en-us/cpp/sanitizers")
+    message(STATUS "Consider ASAN instead")
+  else()
+    add_compile_options(-fsanitize=leak)
+    add_link_options(-fsanitize=leak)
+  endif()
+  message(STATUS "Enabled Leak Sanitizer")
+endif(LSAN)
 
 if(ASAN)
   if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
@@ -53,10 +63,7 @@ endif(ASAN)
 if(TSAN)
   if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     add_compile_options(/fsanitize=thread)
-    message(
-      STATUS
-        "Please see if MSVC supports thread sanitizer: https://learn.microsoft.com/en-us/cpp/sanitizers/asan"
-    )
+    message(STATUS "See MSVC sanitizers: https://learn.microsoft.com/en-us/cpp/sanitizers")
   else()
     add_compile_options(-fsanitize=thread)
     add_link_options(-fsanitize=thread)
@@ -70,9 +77,7 @@ if(RTC_C)
     add_compile_definitions(_ALLOW_RTCc_IN_STL)
     message(STATUS "Enabled Runtime Check Conversions")
   else()
-    message(
-      WARNING
-        "Runtime Check Conversions is not enabled for ${CMAKE_CXX_COMPILER_ID}")
+    message(WARNING "Runtime Check Conversions are not enabled for ${CMAKE_CXX_COMPILER_ID}")
   endif()
 endif(RTC_C)
 
@@ -81,8 +86,7 @@ if(RTC_S)
     add_compile_options(/RTCs)
     message(STATUS "Enabled Runtime Check Stack")
   else()
-    message(
-      WARNING "Runtime Check Stack is not enabled for ${CMAKE_CXX_COMPILER_ID}")
+    message(WARNING "Runtime Check Stack is not enabled for ${CMAKE_CXX_COMPILER_ID}")
   endif()
 endif(RTC_S)
 
@@ -91,9 +95,6 @@ if(RTC_U)
     add_compile_options(/RTCu)
     message(STATUS "Enabled Runtime Check Uninitialized")
   else()
-    message(
-      WARNING
-        "Runtime Check Uninitialized is not enabled for ${CMAKE_CXX_COMPILER_ID}"
-    )
+    message(WARNING "Runtime Check Uninitialized is not enabled for ${CMAKE_CXX_COMPILER_ID}")
   endif()
 endif(RTC_U)
