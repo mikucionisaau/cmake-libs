@@ -22,3 +22,20 @@ The following libraries are supported:
 - [sanitizers](sanitizers.cmake) compiler sanitizer options.
 - [doctest](doctest.cmake): [doctest unit testing](https://github.com/doctest/doctest) framework.
 - [benchmark](benchmark.cmake): [Google Micro-Benchmarking](https://github.com/google/benchmark) framework.
+
+## Dependent Projects
+
+The dependent projects should be cloned together with submodules:
+```
+git clone --recurse-submodules $PROJECT_URL
+```
+
+If you forget `--recurse-submodules` then submodules can be fetched later from within the working directory using:
+```
+git submodule update --init --remote --recursive
+```
+
+Afterwards the submodules can be updated using:
+```
+git submodule update --recursive
+```
