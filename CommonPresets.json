@@ -1,0 +1,727 @@
+{
+  "version": 8,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 28,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "default",
+      "binaryDir": "${sourceDir}/build",
+      "displayName": "Configure with Defaults (Debug)"
+    },
+    {
+      "name": "multi",
+      "inherits": "default",
+      "binaryDir": "${sourceDir}/build-multi",
+      "generator": "Ninja Multi-Config",
+      "displayName": "Configure for Ninja Debug/Release"
+    },
+    {
+      "name": "multi-hardened",
+      "inherits": "multi",
+      "binaryDir": "${sourceDir}/build-multi-hardened",
+      "cacheVariables": {
+        "HARDENED" : { "type": "BOOL", "value": "ON"}
+      },
+      "displayName": "Configure for Ninja Debug/Release with Hardened Security"
+    },
+    {
+      "name": "multi-ssp",
+      "inherits": "multi",
+      "binaryDir": "${sourceDir}/build-multi-ssp",
+      "cacheVariables": {
+        "SSP" : { "type": "BOOL", "value": "ON"}
+      },
+      "displayName": "Configure for Ninja Debug/Release with Stack Protector"
+    },
+    {
+      "name": "multi-san",
+      "inherits": "multi",
+      "binaryDir": "${sourceDir}/build-multi-san",
+      "cacheVariables": {
+        "UBSAN" : { "type": "BOOL", "value": "ON"},
+        "LSAN" : { "type": "BOOL", "value": "ON"},
+        "ASAN" : { "type": "BOOL", "value": "ON"},
+        "SSP" : { "type": "BOOL", "value": "ON"}
+      },
+      "displayName": "Configure for Ninja Debug/Release with common Sanitizers"
+    },
+    {
+      "name": "multi-ubsan",
+      "inherits": "multi",
+      "binaryDir": "${sourceDir}/build-multi-ubsan",
+      "cacheVariables": {
+        "UBSAN" : { "type": "BOOL", "value": "ON"}
+      },
+      "displayName": "Configure for Ninja Debug/Release with Undefined Behavior Sanitizer"
+    },
+    {
+      "name": "multi-lsan",
+      "inherits": "multi",
+      "binaryDir": "${sourceDir}/build-multi-lsan",
+      "cacheVariables": {
+        "LSAN" : { "type": "BOOL", "value": "ON"}
+      },
+      "displayName": "Configure for Ninja Debug/Release with Leak Sanitizer"
+    },
+    {
+      "name": "multi-asan",
+      "inherits": "multi",
+      "binaryDir": "${sourceDir}/build-multi-asan",
+      "cacheVariables": {
+        "ASAN" : { "type": "BOOL", "value": "ON"}
+      },
+      "displayName": "Configure for Ninja Debug/Release with Address Sanitizer"
+    },
+    {
+      "name": "multi-msan",
+      "inherits": "multi",
+      "binaryDir": "${sourceDir}/build-multi-msan",
+      "cacheVariables": {
+        "MSAN" : { "type": "BOOL", "value": "ON"}
+      },
+      "displayName": "Configure for Ninja Debug/Release with Memory Sanitizer"
+    },
+    {
+      "name": "multi-tsan",
+      "inherits": "multi",
+      "binaryDir": "${sourceDir}/build-multi-tsan",
+      "cacheVariables": {
+        "TSAN" : { "type": "BOOL", "value": "ON"}
+      },
+      "displayName": "Configure for Ninja Debug/Release with Thread Sanitizer"
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "default",
+      "configurePreset": "default",
+      "displayName": "Build using default configuration"
+    },
+    {
+      "name": "debug",
+      "configurePreset": "multi",
+      "configuration": "Debug",
+      "displayName": "Build for Debug"
+    },
+    {
+      "name": "debug-hardened",
+      "inherits": "debug",
+      "configurePreset": "multi-hardened",
+      "displayName": "Build for Debug with Hardened Security"
+    },
+    {
+      "name": "debug-ssp",
+      "inherits": "debug",
+      "configurePreset": "multi-ssp",
+      "displayName": "Build for Debug with Stack Protector"
+    },
+    {
+      "name": "debug-san",
+      "inherits": "debug",
+      "configurePreset": "multi-san",
+      "displayName": "Build for Debug with common Sanitizers"
+    },
+    {
+      "name": "debug-ubsan",
+      "inherits": "debug",
+      "configurePreset": "multi-ubsan",
+      "displayName": "Build for Debug with Undefined Behavior Sanitizers"
+    },
+    {
+      "name": "debug-lsan",
+      "inherits": "debug",
+      "configurePreset": "multi-lsan",
+      "displayName": "Build for Debug with Leak Sanitizers"
+    },
+    {
+      "name": "debug-asan",
+      "inherits": "debug",
+      "configurePreset": "multi-asan",
+      "displayName": "Build for Debug with Address Sanitizers"
+    },
+    {
+      "name": "debug-msan",
+      "inherits": "debug",
+      "configurePreset": "multi-msan",
+      "displayName": "Build for Debug with Memory Sanitizers"
+    },
+    {
+      "name": "debug-tsan",
+      "inherits": "debug",
+      "configurePreset": "multi-tsan",
+      "displayName": "Build for Debug with Thread Sanitizers"
+    },
+    {
+      "name": "release",
+      "configurePreset": "multi",
+      "configuration": "Release",
+      "displayName": "Build for Release"
+    },
+    {
+      "name": "release-hardened",
+      "inherits": "release",
+      "configurePreset": "multi-hardened",
+      "displayName": "Build for Release with Hardened Security"
+    },
+    {
+      "name": "release-ssp",
+      "inherits": "release",
+      "configurePreset": "multi-ssp",
+      "displayName": "Build for Release with Stack Protector"
+    },
+    {
+      "name": "release-ubsan",
+      "inherits": "release",
+      "configurePreset": "multi-ubsan",
+      "displayName": "Build for Release with Undefined Behavior Sanitizer"
+    },
+    {
+      "name": "release-lsan",
+      "inherits": "release",
+      "configurePreset": "multi-lsan",
+      "displayName": "Build for Release with Leak Sanitizer"
+    },
+    {
+      "name": "release-asan",
+      "inherits": "release",
+      "configurePreset": "multi-asan",
+      "displayName": "Build for Release with Address Sanitizer"
+    },
+    {
+      "name": "release-msan",
+      "inherits": "release",
+      "configurePreset": "multi-msan",
+      "displayName": "Build for Release with Memory Sanitizer"
+    },
+    {
+      "name": "release-tsan",
+      "inherits": "release",
+      "configurePreset": "multi-tsan",
+      "displayName": "Build for Release with Thread Sanitizer"
+    },
+    {
+      "name": "release-san",
+      "inherits": "release",
+      "configurePreset": "multi-san",
+      "displayName": "Build for Release with common Sanitizers"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "default",
+      "configurePreset": "default",
+      "output": { "outputOnFailure": true, "verbosity": "verbose" },
+      "execution": { "noTestsAction": "error", "stopOnFailure": true },
+      "displayName": "Test with default options"
+    },
+    {
+      "name": "debug",
+      "inherits": "default",
+      "configurePreset": "multi",
+      "configuration": "Debug",
+      "displayName": "Test the Debug"
+    },
+    {
+      "name": "debug-hardened",
+      "inherits": "debug",
+      "configurePreset": "multi-hardened",
+      "displayName": "Test the Debug with Hardened Security"
+    },
+    {
+      "name": "debug-ssp",
+      "inherits": "debug",
+      "configurePreset": "multi-ssp",
+      "displayName": "Test the Debug with Stack Protector"
+    },
+    {
+      "name": "debug-san",
+      "inherits": "debug",
+      "configurePreset": "multi-san",
+      "displayName": "Test the Debug with Sanitizers"
+    },
+    {
+      "name": "debug-ubsan",
+      "inherits": "debug",
+      "configurePreset": "multi-ubsan",
+      "displayName": "Test the Debug with Undefined Behavior Sanitizer"
+    },
+    {
+      "name": "debug-lsan",
+      "inherits": "debug",
+      "configurePreset": "multi-lsan",
+      "displayName": "Test the Debug with Leak Sanitizer"
+    },
+    {
+      "name": "debug-asan",
+      "inherits": "debug",
+      "configurePreset": "multi-asan",
+      "displayName": "Test the Debug with Address Sanitizer"
+    },
+    {
+      "name": "debug-msan",
+      "inherits": "debug",
+      "configurePreset": "multi-msan",
+      "displayName": "Test the Debug with Memory Sanitizer"
+    },
+    {
+      "name": "debug-tsan",
+      "inherits": "debug",
+      "configurePreset": "multi-tsan",
+      "displayName": "Test the Debug with Thread Sanitizer"
+    },
+    {
+      "name": "release",
+      "inherits": "default",
+      "configurePreset": "multi",
+      "configuration": "Release",
+      "displayName": "Test the Release"
+    },
+    {
+      "name": "release-hardened",
+      "inherits": "release",
+      "configurePreset": "multi-hardened",
+      "displayName": "Test the Release with Hardened Security"
+    },
+    {
+      "name": "release-ssp",
+      "inherits": "release",
+      "configurePreset": "multi-ssp",
+      "displayName": "Test the Release with Stack Protector"
+    },
+    {
+      "name": "release-ubsan",
+      "inherits": "release",
+      "configurePreset": "multi-ubsan",
+      "displayName": "Test the Release with Undefined Behavior Sanitizer"
+    },
+    {
+      "name": "release-lsan",
+      "inherits": "release",
+      "configurePreset": "multi-lsan",
+      "displayName": "Test the Release with Leak Sanitizer"
+    },
+    {
+      "name": "release-asan",
+      "inherits": "release",
+      "configurePreset": "multi-asan",
+      "displayName": "Test the Release with Address Sanitizer"
+    },
+    {
+      "name": "release-msan",
+      "inherits": "release",
+      "configurePreset": "multi-msan",
+      "displayName": "Test the Release with Memory Sanitizer"
+    },
+    {
+      "name": "release-tsan",
+      "inherits": "release",
+      "configurePreset": "multi-tsan",
+      "displayName": "Test the Release with Thread Sanitizer"
+    },
+    {
+      "name": "release-san",
+      "inherits": "release",
+      "configurePreset": "multi-san",
+      "displayName": "Test the Release with common Sanitizers"
+    }
+  ],
+  "workflowPresets": [
+    {
+      "name": "default",
+      "displayName": "Configure, Build and Test with Defaults (Debug)",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "default"
+        },
+        {
+          "type": "build",
+          "name": "default"
+        },
+        {
+          "type": "test",
+          "name": "default"
+        }
+      ]
+    },
+    {
+      "name": "debug",
+      "displayName": "Configure, Build and Test for Debug",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi"
+        },
+        {
+          "type": "build",
+          "name": "debug"
+        },
+        {
+          "type": "test",
+          "name": "debug"
+        }
+      ]
+    },
+    {
+      "name": "debug-hardened",
+      "displayName": "Configure, Build and Test for Debug with Hardened Security",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi-hardened"
+        },
+        {
+          "type": "build",
+          "name": "debug-hardened"
+        },
+        {
+          "type": "test",
+          "name": "debug-hardened"
+        }
+      ]
+    },
+    {
+      "name": "debug-ssp",
+      "displayName": "Configure, Build and Test for Debug with Stack Protector",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi-ssp"
+        },
+        {
+          "type": "build",
+          "name": "debug-ssp"
+        },
+        {
+          "type": "test",
+          "name": "debug-ssp"
+        }
+      ]
+    },
+    {
+      "name": "debug-san",
+      "displayName": "Configure, Build and Test for Debug with common Sanitizers",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi-san"
+        },
+        {
+          "type": "build",
+          "name": "debug-san"
+        },
+        {
+          "type": "test",
+          "name": "debug-san"
+        }
+      ]
+    },
+    {
+      "name": "debug-ubsan",
+      "displayName": "Configure, Build and Test for Debug with Undefined Behavior Sanitizer",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi-ubsan"
+        },
+        {
+          "type": "build",
+          "name": "debug-ubsan"
+        },
+        {
+          "type": "test",
+          "name": "debug-ubsan"
+        }
+      ]
+    },
+    {
+      "name": "debug-lsan",
+      "displayName": "Configure, Build and Test for Debug with Leak Sanitizer",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi-lsan"
+        },
+        {
+          "type": "build",
+          "name": "debug-lsan"
+        },
+        {
+          "type": "test",
+          "name": "debug-lsan"
+        }
+      ]
+    },
+    {
+      "name": "debug-asan",
+      "displayName": "Configure, Build and Test for Debug with Address Sanitizer",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi-asan"
+        },
+        {
+          "type": "build",
+          "name": "debug-asan"
+        },
+        {
+          "type": "test",
+          "name": "debug-asan"
+        }
+      ]
+    },
+    {
+      "name": "debug-msan",
+      "displayName": "Configure, Build and Test for Debug with Memory Sanitizer",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi-msan"
+        },
+        {
+          "type": "build",
+          "name": "debug-msan"
+        },
+        {
+          "type": "test",
+          "name": "debug-msan"
+        }
+      ]
+    },
+    {
+      "name": "debug-tsan",
+      "displayName": "Configure, Build and Test for Debug with Thread Sanitizer",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi-tsan"
+        },
+        {
+          "type": "build",
+          "name": "debug-tsan"
+        },
+        {
+          "type": "test",
+          "name": "debug-tsan"
+        }
+      ]
+    },
+    {
+      "name": "release",
+      "displayName": "Configure, Build and Test for Release",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi"
+        },
+        {
+          "type": "build",
+          "name": "release"
+        },
+        {
+          "type": "test",
+          "name": "release"
+        }
+      ]
+    },
+    {
+      "name": "release-hardened",
+      "displayName": "Configure, Build and Test for Release with Hardened Security",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi-hardened"
+        },
+        {
+          "type": "build",
+          "name": "release-hardened"
+        },
+        {
+          "type": "test",
+          "name": "release-hardened"
+        }
+      ]
+    },
+    {
+      "name": "release-ssp",
+      "displayName": "Configure, Build and Test for Release with Stack Protector",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi-ssp"
+        },
+        {
+          "type": "build",
+          "name": "release-ssp"
+        },
+        {
+          "type": "test",
+          "name": "release-ssp"
+        }
+      ]
+    },
+    {
+      "name": "release-san",
+      "displayName": "Configure, Build and Test for Release with common Sanitizers",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi-san"
+        },
+        {
+          "type": "build",
+          "name": "release-san"
+        },
+        {
+          "type": "test",
+          "name": "release-san"
+        }
+      ]
+    },
+    {
+      "name": "release-ubsan",
+      "displayName": "Configure, Build and Test for Release with Undefined Behavior Sanitizer",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi-ubsan"
+        },
+        {
+          "type": "build",
+          "name": "release-ubsan"
+        },
+        {
+          "type": "test",
+          "name": "release-ubsan"
+        }
+      ]
+    },
+    {
+      "name": "release-lsan",
+      "displayName": "Configure, Build and Test for Release with Leak Sanitizer",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi-lsan"
+        },
+        {
+          "type": "build",
+          "name": "release-lsan"
+        },
+        {
+          "type": "test",
+          "name": "release-lsan"
+        }
+      ]
+    },
+    {
+      "name": "release-asan",
+      "displayName": "Configure, Build and Test for Release with Address Sanitizer",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi-asan"
+        },
+        {
+          "type": "build",
+          "name": "release-asan"
+        },
+        {
+          "type": "test",
+          "name": "release-asan"
+        }
+      ]
+    },
+    {
+      "name": "release-msan",
+      "displayName": "Configure, Build and Test for Release with Memory Sanitizer",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi-msan"
+        },
+        {
+          "type": "build",
+          "name": "release-msan"
+        },
+        {
+          "type": "test",
+          "name": "release-msan"
+        }
+      ]
+    },
+    {
+      "name": "release-tsan",
+      "displayName": "Configure, Build and Test for Release with Thread Sanitizer",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi-tsan"
+        },
+        {
+          "type": "build",
+          "name": "release-tsan"
+        },
+        {
+          "type": "test",
+          "name": "release-tsan"
+        }
+      ]
+    },
+    {
+      "name": "multi",
+      "displayName": "Configure, Build and Test for Debug and Release",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi"
+        },
+        {
+          "type": "build",
+          "name": "debug"
+        },
+        {
+          "type": "test",
+          "name": "debug"
+        },
+        {
+          "type": "build",
+          "name": "release"
+        },
+        {
+          "type": "test",
+          "name": "release"
+        }
+      ]
+    },
+    {
+      "name": "multi-san",
+      "displayName": "Configure, Build and Test for Debug and Release with common Sanitizers",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "multi-san"
+        },
+        {
+          "type": "build",
+          "name": "debug-san"
+        },
+        {
+          "type": "test",
+          "name": "debug-san"
+        },
+        {
+          "type": "build",
+          "name": "release-san"
+        },
+        {
+          "type": "test",
+          "name": "release-san"
+        }
+      ]
+    }
+  ]
+}
