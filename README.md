@@ -22,7 +22,7 @@ The following libraries are supported:
 - [sanitizers](sanitizers.cmake) compiler sanitizer options.
 - [doctest](doctest.cmake): [doctest unit testing](https://github.com/doctest/doctest) framework.
 - [benchmark](benchmark.cmake): [Google Micro-Benchmarking](https://github.com/google/benchmark) framework.
-- [matplot++](matplotpp.cmake): [Matplot++](https://github.com/alandefreitas/matplotplusplus) A C++ Graphics Library for Data Visualization.
+- [matplot++](matplotplusplus.cmake): [Matplot++](https://github.com/alandefreitas/matplotplusplus) A C++ Graphics Library for Data Visualization.
 
 ## Dependent Projects
 
