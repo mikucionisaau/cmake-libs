@@ -71,7 +71,7 @@ if (HARDENED)
     add_compile_options(/analyze /sdl /GS /guard:cf)
     if (CMAKE_BUILD_TYPE STREQUAL "Debug")
       add_compile_definitions(_ALLOW_RTCc_IN_STL)
-      add_compile_options(/RTCc /RTCs /RTCu)  # incompatible with /O2
+      add_compile_options(/RTCs /RTCu)  # incompatible with /O2, loops: /RTCc
     endif ()
     message(STATUS "Enabled Hardened Security")
   else ()
