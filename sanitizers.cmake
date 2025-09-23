@@ -37,16 +37,23 @@ endif(SSP)
 
 if (HARDENED)
   if(CMAKE_CXX_COMPILER_ID MATCHES GNU)
-    # See `g++ --help=hardened`
-    add_compile_options(-Whardened -fhardened)
-    add_link_options(-Whardened -fhardened)
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 14)
+      # See `g++ --help=hardened`
+      add_compile_options(-Whardened -fhardened)
+      add_link_options(-Whardened -fhardened)
+    else ()
+      add_compile_definitions(_FORTIFY_SOURCE=3 _GLIBCXX_ASSERTIONS)
+      add_compile_options(-fvisibility=hidden -flto -ftrivial-auto-var-init=zero -fstack-protector-strong -fstack-clash-protection -fcf-protection=full)
+      add_link_options(-flto -ftrivial-auto-var-init=zero -fstack-protector-strong -fstack-clash-protection -fcf-protection=full -Wl,-z,relro,-z,now)
+    endif ()
     message(STATUS "Enabled Hardened Security")
   elseif (CMAKE_CXX_COMPILER_ID MATCHES Clang)
     # See https://clang.llvm.org/docs/SafeStack.html
     # Also https://best.openssf.org/Compiler-Hardening-Guides/Compiler-Options-Hardening-Guide-for-C-and-C++.html
+    # -fsanitize=cfi depends on libclang-rt-19-dev being installed
     add_compile_definitions(_FORTIFY_SOURCE=3 _GLIBCXX_ASSERTIONS)
     add_compile_options(-fvisibility=hidden -flto -fstack-protector-strong -fcf-protection=full -fstack-clash-protection -fsanitize=safe-stack -fsanitize=cfi)
-    add_link_options(-flto -fstack-protector-strong -fstack-clash-protection -fcf-protection=full -fsanitize=safe-stack -fsanitize=cfi -Wl,-z,now -Wl,-z,relro)
+    add_link_options(-flto -fstack-protector-strong -fstack-clash-protection -fcf-protection=full -fsanitize=safe-stack -fsanitize=cfi -Wl,-z,relro,-z,now)
     # See https://libcxx.llvm.org/Hardening.html
     if (CMAKE_BUILD_TYPE STREQUAL "Debug")
       add_compile_definitions(_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_DEBUG)
