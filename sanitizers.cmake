@@ -3,6 +3,7 @@
 # AddressSanitizer also checks for stack abuse and leaks, but StackProtector and LeakSanitizer have less overhead.
 # Mutually compatible sanitizers: SSP, UBSAN, LSAN, ASAN
 # TSAN is incompatible with UBSAN, LSAN, ASAN
+option(CXXWARN "Compiler warnings" OFF)
 option(SSP "Stack Smashing Protector (GCC/Clang/ApplClang/MSVC)" OFF)
 option(UBSAN "Undefined Behavior Sanitizer (GCC/Clang/AppleClang on Unix)" OFF)
 option(LSAN "Leak Sanitizer (GCC/Clang/AppleClang on Unix)" OFF)
@@ -13,6 +14,18 @@ option(HARDENED "Enable flags which improve security without affecting ABI" OFF)
 option(RTC_C "Runtime Checks for Conversions (MSVC on Windows)" OFF)
 option(RTC_S "Runtime Checks for Stack (MSVC on Windows)" OFF)
 option(RTC_U "Runtime Checks for Uninitialized (MSVC on Windows)" OFF)
+
+if (CXXWARN)
+  if (CMAKE_CXX_COMPILER_ID MATCHES GNU)
+    add_compile_options(-Wpedantic -Wall -Wextra)
+  endif ()
+  if (CMAKE_CXX_COMPILER_ID MATCHES Clang)
+    add_compile_options(-Wpedantic -Wall -Wextra)
+  endif ()
+  if (CMAKE_CXX_COMPILER_ID MATCHES MSVC)
+    add_compile_options(/Wall)
+  endif ()
+endif (CXXWARN)
 
 if(SSP)
   add_compile_options(-Wstack-protector -fstack-protector-strong -fstack-clash-protection)

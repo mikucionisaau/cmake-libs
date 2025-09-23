@@ -15,6 +15,9 @@
       "name": "multi",
       "inherits": "default",
       "binaryDir": "${sourceDir}/build-multi",
+      "cacheVariables": {
+        "CXXWARN" : { "type": "BOOL", "value": "ON"}
+      },
       "generator": "Ninja Multi-Config",
       "displayName": "Configure for Ninja Debug/Release"
     },
