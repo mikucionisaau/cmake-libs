@@ -1,5 +1,6 @@
 # Ensures that Armadillo (Linear Algebra) library is installed
 include(FetchContent)
+cmake_policy(SET CMP0135 NEW) # set the time of extraction when extracting an archive (since cmake-3.24)
 FetchContent_Declare(Armadillo
         URL https://people.cs.aau.dk/~marius/mirrors/armadillo/armadillo-15.0.2.tar.xz
         URL_HASH SHA256=990ab4ccb7eff1b6d70409e9aa7fa4119877ac5f5d10ba219e98460ab3e4d6eb
